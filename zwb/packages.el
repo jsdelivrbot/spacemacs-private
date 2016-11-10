@@ -27,7 +27,6 @@
         beacon
         easy-kill
         git-messenger
-        imenu-anywhere
         pangu-spacing
         nodejs-repl
         ))
@@ -129,12 +128,6 @@ If `F.~REV~' already exists, use it instead of checking it out again."
 
 (defun zwb/post-init-hungry-delete ()
   (global-hungry-delete-mode t))
-
-(defun zwb/init-imenu-anywhere ()
-  (use-package imenu-anywhere
-    :defer t
-    :init
-    (global-set-key (kbd "s-i") 'imenu-anywhere)))
 
 (defun zwb/post-init-pangu-spacing ()
   (add-hook 'markdown-mode-hook

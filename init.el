@@ -54,6 +54,9 @@ values."
      ;; auto-completion
      ;; better-defaults
 
+     ;; Themes
+     ahei
+
      ;; Chat
      erc
 
@@ -68,7 +71,7 @@ values."
       auto-completion-enable-help-tooltip t
       auto-completion-enable-sort-by-usage t
       auto-completion-tab-key-behavior 'complete)
-     helm
+     ; helm
      ivy
 
      ;; Configuration files
@@ -76,9 +79,9 @@ values."
 
      ;; Emacs
      better-defaults
-     (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (org :variables
           org-enable-github-support t)
+     semantic
 
      ;; Frameworks
      ruby-on-rails
@@ -94,7 +97,8 @@ values."
      erlang
      (go :variables
          gofmt-command "goimports"
-         go-use-gometalinter t)
+        ;go-use-gometalinter t
+         )
      haskell
      html
      (javascript :variables javascript-disable-tern-port-files nil)
@@ -105,7 +109,7 @@ values."
            ruby-enable-enh-ruby-mode t
            ruby-version-manager 'rvm
            ruby-test-runner 'rspec)
-     (rust :variables rust-enable-rustfmt-on-save t)
+     (rust :variables rust-format-on-save t)
      scala
      shell-scripts
      yaml
@@ -135,10 +139,8 @@ values."
 
      ;; Tags
      cscope
-     (gtags :disabled-for go)
+    (gtags :variables gtags-enable-by-default t)
 
-     ;; Themes
-     ahei
 
      ;; Tools
      (dash
@@ -159,9 +161,9 @@ values."
 
      ;; Web services
      evernote
-;;     (wakatime :variables
-;;               wakatime-api-key  "b0d4cb91-e437-470c-b54c-72d92716287c"
-;;               wakatime-cli-path "/Library/Python/2.7/site-packages/wakatime/cli.py")
+     ;;(wakatime :variables
+     ;;          wakatime-api-key  "b0d4cb91-e437-470c-b54c-72d92716287c"
+     ;;          wakatime-cli-path "/usr/local/bin/wakatime")
      ;; Blog
      blog
 
@@ -179,8 +181,8 @@ values."
                                       editorconfig
                                       )
    ;; A list of packages that cannot be updated.
-   dotspacemacs-additional-packages '()
-   ;; A list of packages and/or extensions that will not be install and loaded.
+   dotspacemacs-frozen-packages '()
+   ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(;; magit-gh-pulls
                                     ;; magit-gitflow
                                     ;; evil-mc
@@ -244,7 +246,9 @@ values."
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    dotspacemacs-elpa-timeout 5
    ;; If non nil then spacemacs will check for updates at startup
-   ;; when the current branch is not `develop'. (default t)
+   ;; when the current branch is not `develop'. Note that checking for
+   ;; new versions works via git commands, thus it calls GitHub services
+   ;; whenever you start Emacs. (default nil)
    dotspacemacs-check-for-update nil
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
@@ -270,20 +274,21 @@ values."
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
+   ;; List sizes may be nil, in which case
+   ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((projects . 5))
-   ;; Number of recent files to show in the startup buffer. Ignored if
-   ;; `dotspacemacs-startup-lists' doesn't include `recents'. (default 5)
-   dotspacemacs-startup-recent-list-size 5
+   ;; True if the home buffer should respond to resize events.
+   dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'org-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(zenburn)
-   ;; If non nil the cursor color matches the state color.
+   dotspacemacs-themes '(default)
+   ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
-   ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
-   ;; size to make separators look not too crappy.
+   ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
+   ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Monaco"
                                :size 13
                                :weight normal
@@ -366,6 +371,12 @@ values."
    ;; right; if there is insufficient space it displays it at the bottom.
    ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
+   ;; Control where `switch-to-buffer' displays the buffer. If nil,
+   ;; `switch-to-buffer' displays the buffer in the current window even if
+   ;; another same-purpose window is available. If non nil, `switch-to-buffer'
+   ;; displays the buffer in a same-purpose window even if the buffer can be
+   ;; displayed in the current window. (default nil)
+   dotspacemacs-switch-to-buffer-prefers-purpose nil
    ;; If non nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
@@ -445,10 +456,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
-  "Configuration function for user code.
- This function is called at the very end of Spacemacs initialization after
-layers configuration. You are free to put any user code."
-
+  "This function is called at the very end of Spacemacs initialization after
+  layers configuration.
+  This is the place where most of your configurations should be done. Unless it is
+  explicitly specified that a variable should be set before a package is loaded,
+  you should place your code here."
   (setq-default dotspacemacs-startup-banner '"/Users/zwb/.spacemacs.d/banner/spacemacs.png")
 
   ;; email address
@@ -496,15 +508,15 @@ layers configuration. You are free to put any user code."
     ; (gtd/show-agenda)
     )
 
-  (setq company-backends-c-mode-common '((company-c-headers
-                                          company-ycmd
-                                          company-dabbrev :with company-yasnippet)))
-
-  (add-hook 'c-mode-hook 'ycmd-mode)
-  (add-hook 'js2-mode-hook 'ycmd-mode)
+;;  (setq company-backends-c-mode-common '((company-c-headers
+;;                                          company-ycmd
+;;                                          company-dabbrev :with company-yasnippet)))
+;;
+;;  (add-hook 'c-mode-hook 'ycmd-mode)
+;;  (add-hook 'js2-mode-hook 'ycmd-mode)
 
   ;; golang
-  (setq flycheck-gometalinter-vendor t)
+  ;; (setq flycheck-gometalinter-vendor t)
 
   ;; ycmd
   (setq url-show-status nil)
@@ -515,6 +527,8 @@ layers configuration. You are free to put any user code."
 
   (spacemacs/toggle-fullscreen)
   )
+;; Do not write anything past this comment. This is where Emacs will
+;; auto-generate custom variable definitions.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -526,16 +540,13 @@ layers configuration. You are free to put any user code."
    (quote
     ("84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" default)))
  '(evil-want-Y-yank-to-eol nil)
- '(fci-rule-color "#383838" t)
- '(js-indent-level 2)
+ '(fci-rule-color "#383838")
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
- '(org-agenda-files nil)
- '(org-directory "~/GTD")
  '(package-selected-packages
    (quote
-    (rtags irony-eldoc flycheck-irony company-irony-c-headers company-irony irony cmake-ide levenshtein minitest pug-mode nodejs-repl zenburn-theme-theme osx-dictionary dumb-jump window-numbering use-package spacemacs-theme powerline smart-mode-line rich-minority projectile-rails rake persp-mode pcre2el ox-gfm alert log4e gntp git org mustache markdown-mode skewer-mode simple-httpd json-snatcher json-reformat js2-mode htmlize parent-mode xcscope haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pcache ht flycheck-rust flycheck flx grizzl magit git-commit with-editor smartparens iedit anzu evil goto-chg undo-tree scala-mode tablist magit-popup docker-tramp diminish helm-dash counsel swiper ivy request-deferred request deferred web-completion-data dash-functional tern pos-tip go-mode ghc haskell-mode company hydra inflections edn multiple-cursors paredit peg eval-sexp-fu highlight cider spinner queue pkg-info clojure-mode epl rust-mode inf-ruby names f ctable s bind-map bind-key seq packed dash auctex pinyinlib ace-jump-mode helm avy helm-core async auto-complete popup quelpa package-build cargo imenu-list auctex-latexmk gh zenburn-theme yaml-mode xterm-color ws-butler wgrep web-beautify wakatime-mode volatile-highlights vi-tilde-fringe vagrant-tramp vagrant uuidgen toml-mode toc-org tagedit spaceline smex smeargle smart-mode-line-powerline-theme slim-mode shell-pop scss-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv ranger rainbow-delimiters popwin pbcopy paradox pangu-spacing osx-trash orgit org-projectile org-present org-pomodoro org-plus-contrib org-page org-download org-bullets open-junk-file noflet nginx-mode neotree mwim multi-term move-text mmm-mode marshal markdown-toc magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum logito livid-mode linum-relative link-hint less-css-mode launchctl json-mode js2-refactor js-doc jade-mode ivy-hydra intero info+ indent-guide imenu-anywhere ido-vertical-mode ibuffer-projectile hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-cscope helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio go-eldoc gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md ggtags geeknote flycheck-ycmd flycheck-pos-tip flycheck-haskell flycheck-gometalinter flx-ido floobits fish-mode find-by-pinyin-dired fill-column-indicator feature-mode fcitx fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks ensime enh-ruby-mode emmet-mode elisp-slime-nav editorconfig easy-kill dockerfile-mode docker disaster dired+ diff-hl define-word dash-at-point counsel-projectile counsel-dash company-ycmd company-web company-tern company-statistics company-shell company-quickhelp company-go company-ghci company-ghc company-cabal company-c-headers company-auctex column-enforce-mode color-theme coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu chruby bundler blog-admin beacon auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-pinyin ace-link ace-jump-helm-line ac-ispell)))
+    (rainbow-mode eyebrowse evil-surround go-guru editorconfig yaml-mode xterm-color ws-butler window-numbering which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline smex smeargle smart-mode-line-powerline-theme powerline smart-mode-line rich-minority slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv ranger rainbow-delimiters racer pug-mode projectile-rails rake popwin persp-mode pcre2el pbcopy paradox pangu-spacing osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro alert log4e gntp org-plus-contrib org-page git org mustache org-download org-bullets open-junk-file noflet nodejs-repl nginx-mode neotree mwim multi-term move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode skewer-mode simple-httpd linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-purpose ivy-hydra insert-shebang info+ indent-guide ido-vertical-mode ibuffer-projectile hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-cscope xcscope helm-company helm-c-yasnippet helm-ag haskell-snippets haml-mode google-translate golden-ratio go-eldoc gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md ggtags geeknote flycheck-ycmd flycheck-rust flycheck-pos-tip flycheck-haskell flycheck flx-ido flx floobits fish-mode find-by-pinyin-dired fill-column-indicator feature-mode fcitx fasd grizzl fancy-battery expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit git-commit with-editor evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks ensime scala-mode enh-ruby-mode emmet-mode elisp-slime-nav easy-kill dumb-jump dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat disaster dired+ diminish diff-hl dash-at-point counsel-projectile projectile counsel-dash helm-dash counsel swiper company-ycmd request-deferred request deferred company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-quickhelp pos-tip company-go go-mode company-ghci company-ghc ghc haskell-mode company-cabal company-c-headers company-auctex company column-enforce-mode color-theme coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode clang-format cider-eval-sexp-fu eval-sexp-fu highlight cider spinner queue pkg-info clojure-mode epl chruby cargo rust-mode bundler inf-ruby blog-admin names f ctable s bind-map bind-key beacon auto-yasnippet auto-highlight-symbol auto-compile packed dash auctex aggressive-indent adaptive-wrap ace-window ace-pinyin pinyinlib ace-jump-mode ace-link ace-jump-helm-line avy async ac-ispell auto-complete popup quelpa package-build zenburn-theme)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map

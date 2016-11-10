@@ -25,8 +25,6 @@
 (defun color-theme-settings ()
   "Settings for `color-theme'."
 
-  (disable-theme 'zenburn)
-
   (require 'util)
   (when (eq system-type 'darwin)
     (require 'ls-lisp)
@@ -38,18 +36,7 @@
   (require 'color-theme-ahei)
   (require 'face-settings)
   (require 'generic-x)
-
-  ;; (setq powerline-arrow-shape 'curve)
-  ;; (setq powerline-default-separator-dir '(right . left))
-
-
-  (apply-define-key
-   color-theme-mode-map
-   `(("'"   switch-to-other-buffer)
-     ("u"   View-scroll-half-page-backward)
-     ("SPC" scroll-up)
-     ("1"   delete-other-windows)
-     ("."   find-symbol-at-point))))
+)
 
 (eval-after-load "color-theme"
   `(color-theme-settings))
