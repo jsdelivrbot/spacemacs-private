@@ -55,23 +55,20 @@ values."
      ;; better-defaults
 
      ;; Themes
-     ahei
 
      ;; Chat
      erc
 
      ;; Checkers
-     (syntax-checking
-      :variables
-      syntax-checking-enable-tooltips t)
+     syntax-checking
 
      ;; Completion
      (auto-completion
       :variables
+      auto-completion-enable-snippets-in-popup t
       auto-completion-enable-help-tooltip t
       auto-completion-enable-sort-by-usage t
       auto-completion-tab-key-behavior 'complete)
-     ; helm
      ivy
 
      ;; Configuration files
@@ -91,18 +88,15 @@ values."
               chinese-enable-fcitx t)
 
      ;; Programming and markup languages
-     c-c++
-     (clojure :variables clojure-enable-fancify-symbols t)
+     (c-c++ :variables
+            c-c++-default-mode-for-headers 'c++-mode)
      emacs-lisp
-     erlang
      (go :variables
          gofmt-command "goimports"
-        ;go-use-gometalinter t
+                                        ;go-use-gometalinter t
          )
-     haskell
      html
      (javascript :variables javascript-disable-tern-port-files nil)
-     latex
      lua
      markdown
      (ruby :variables
@@ -110,7 +104,6 @@ values."
            ruby-version-manager 'rvm
            ruby-test-runner 'rspec)
      (rust :variables rust-format-on-save t)
-     scala
      shell-scripts
      yaml
 
@@ -139,7 +132,7 @@ values."
 
      ;; Tags
      cscope
-    (gtags :variables gtags-enable-by-default t)
+     (gtags :variables gtags-enable-by-default t)
 
 
      ;; Tools
@@ -159,11 +152,6 @@ values."
            ycmd-server-command '("python" "/Users/zwb/.bin/ycmd/ycmd")
            ycmd-force-semantic-completion t)
 
-     ;; Web services
-     evernote
-     ;;(wakatime :variables
-     ;;          wakatime-api-key  "b0d4cb91-e437-470c-b54c-72d92716287c"
-     ;;          wakatime-cli-path "/usr/local/bin/wakatime")
      ;; Blog
      blog
 
@@ -183,41 +171,7 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(;; magit-gh-pulls
-                                    ;; magit-gitflow
-                                    ;; evil-mc
-                                    ;; skewer-mode
-                                    ;; vi-tilde-fringe
-                                    ;; emmet-mode
-                                    ;; ;; smooth-scrolling
-                                    ;; org-repo-todo
-                                    chinese-wbim
-                                    chinese-pyim
-                                    ;; srefactor
-                                    ;; org-download
-                                    ;; org-timer
-                                    ;; org-plus-contrib
-                                    ;; org-tree-slide
-                                    ;; git-gutter
-                                    ;; git-gutter-fringe
-                                    ;; ;; i prefer iedit
-                                    ;; multiple-cursors
-                                    ;; ;; disable it for lispy-mode
-                                    ;; ;;https://github.com/abo-abo/lispy/issues/137
-                                    ;; evil-escape
-                                    ;; ;;At first, I should disable hydra in zilongshanren layer and install clj-refactor, after it is installed.
-                                    ;; ;; I could re-enable it again in zilongshanren layer.
-                                    ;; ;; clj-refactor
-                                    ;; ;;remove from spacemacs distribution
-                                    ;; ;; neotree
-                                    leuven-theme
-                                    ;; gh-md
-                                    ;; evil-lisp-state
-                                    ;; spray
-                                    ;; doc-view
-                                    ;; lorem-ipsum
-                                    solarized-theme
-                                    )
+   dotspacemacs-excluded-packages '()
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -284,7 +238,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(default)
+   dotspacemacs-themes '(zenburn)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -431,9 +385,9 @@ values."
    ;; (default nil)
    dotspacemacs-persistent-server nil
    ;; List of search tool executable names. Spacemacs uses the first installed
-   ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
-   ;; (default '("ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("pt" "ag" "ack" "grep")
+   ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
+   ;; (default '("rg" "ag" "pt" "ack" "grep"))
+   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
@@ -443,7 +397,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup 'all
+   dotspacemacs-whitespace-cleanup all
    ))
 
 (defun dotspacemacs/user-init ()
@@ -477,15 +431,15 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq flycheck-pos-tip-timeout 4)
 
   ;; mode-line
-  (setq-default powerline-default-separator 'arrow)
-
+  (setq-default powerline-default-separator 'nil)
+  (setq spaceline-org-clock-p t)
+  (with-eval-after-load 'spaceline-segments
+    (spaceline-toggle-minor-modes-off)
+    )
 
   ;; hs-minor
   (add-hook 'prog-mode-hook (lambda () (unless (eq major-mode 'web-mode)
                                          (hs-minor-mode))))
-
-  ;; latex
-  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
   ;; eyebrowse
   (setq eyebrowse-new-workspace (lambda () (helm-for-files)))
@@ -493,30 +447,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; wakatime
   (setq wakatime-python-bin "/usr/bin/python")
 
-  ;; smart-mode-line
-  (with-eval-after-load 'spaceline-segments
-    (spaceline-toggle-minor-modes-off)
-    (setq sml/theme 'powerline)
-    (sml/setup)
-    )
-
   (global-set-key  (kbd "C-h") 'backward-delete-char)
 
   (with-eval-after-load 'org
     (setq org-agenda-files (list org-directory))
     (setq org-bullets-bullet-list '("☰" "☷" "⋗" "⇀"))
-    ; (gtd/show-agenda)
+                                        ; (gtd/show-agenda)
     )
-
-;;  (setq company-backends-c-mode-common '((company-c-headers
-;;                                          company-ycmd
-;;                                          company-dabbrev :with company-yasnippet)))
-;;
-;;  (add-hook 'c-mode-hook 'ycmd-mode)
-;;  (add-hook 'js2-mode-hook 'ycmd-mode)
-
-  ;; golang
-  ;; (setq flycheck-gometalinter-vendor t)
 
   ;; ycmd
   (setq url-show-status nil)
@@ -534,110 +471,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
- '(custom-safe-themes
-   (quote
-    ("84d2f9eeb3f82d619ca4bfffe5f157282f4779732f48a5ac1484d94d5ff5b279" default)))
- '(evil-want-Y-yank-to-eol nil)
- '(fci-rule-color "#383838")
- '(nrepl-message-colors
-   (quote
-    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (rainbow-mode eyebrowse evil-surround go-guru editorconfig yaml-mode xterm-color ws-butler window-numbering which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline smex smeargle smart-mode-line-powerline-theme powerline smart-mode-line rich-minority slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv ranger rainbow-delimiters racer pug-mode projectile-rails rake popwin persp-mode pcre2el pbcopy paradox pangu-spacing osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro alert log4e gntp org-plus-contrib org-page git org mustache org-download org-bullets open-junk-file noflet nodejs-repl nginx-mode neotree mwim multi-term move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode skewer-mode simple-httpd linum-relative link-hint less-css-mode launchctl js2-refactor js2-mode js-doc ivy-purpose ivy-hydra insert-shebang info+ indent-guide ido-vertical-mode ibuffer-projectile hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-cscope xcscope helm-company helm-c-yasnippet helm-ag haskell-snippets haml-mode google-translate golden-ratio go-eldoc gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md ggtags geeknote flycheck-ycmd flycheck-rust flycheck-pos-tip flycheck-haskell flycheck flx-ido flx floobits fish-mode find-by-pinyin-dired fill-column-indicator feature-mode fcitx fasd grizzl fancy-battery expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit git-commit with-editor evil-lisp-state evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks ensime scala-mode enh-ruby-mode emmet-mode elisp-slime-nav easy-kill dumb-jump dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat disaster dired+ diminish diff-hl dash-at-point counsel-projectile projectile counsel-dash helm-dash counsel swiper company-ycmd request-deferred request deferred company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-quickhelp pos-tip company-go go-mode company-ghci company-ghc ghc haskell-mode company-cabal company-c-headers company-auctex company column-enforce-mode color-theme coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode clang-format cider-eval-sexp-fu eval-sexp-fu highlight cider spinner queue pkg-info clojure-mode epl chruby cargo rust-mode bundler inf-ruby blog-admin names f ctable s bind-map bind-key beacon auto-yasnippet auto-highlight-symbol auto-compile packed dash auctex aggressive-indent adaptive-wrap ace-window ace-pinyin pinyinlib ace-jump-mode ace-link ace-jump-helm-line avy async ac-ispell auto-complete popup quelpa package-build zenburn-theme)))
- '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
- '(vc-annotate-background "#2B2B2B")
- '(vc-annotate-color-map
-   (quote
-    ((20 . "#BC8383")
-     (40 . "#CC9393")
-     (60 . "#DFAF8F")
-     (80 . "#D0BF8F")
-     (100 . "#E0CF9F")
-     (120 . "#F0DFAF")
-     (140 . "#5F7F5F")
-     (160 . "#7F9F7F")
-     (180 . "#8FB28F")
-     (200 . "#9FC59F")
-     (220 . "#AFD8AF")
-     (240 . "#BFEBBF")
-     (260 . "#93E0E3")
-     (280 . "#6CA0A3")
-     (300 . "#7CB8BB")
-     (320 . "#8CD0D3")
-     (340 . "#94BFF3")
-     (360 . "#DC8CC3"))))
- '(vc-annotate-very-old-color "#DC8CC3"))
+    (chinese-pyim chinese-pyim-basedict counsel swiper ivy helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-cscope helm-company helm-c-yasnippet helm-ag ace-jump-helm-line wakatime-mode dired+ zenburn-theme yaml-mode xterm-color xcscope ws-butler window-numbering which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline smex smeargle slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv ranger rainbow-delimiters racer quelpa pug-mode projectile-rails popwin persp-mode pbcopy paradox pangu-spacing ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-plus-contrib org-page org-download org-bullets open-junk-file noflet nodejs-repl nginx-mode neotree mwim multi-term move-text mmm-mode minitest markdown-toc magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode linum-relative link-hint less-css-mode launchctl js2-refactor js-doc ivy-purpose ivy-hydra intero insert-shebang info+ indent-guide ido-vertical-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-make haskell-snippets google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md ggtags geeknote flycheck-ycmd flycheck-rust flycheck-pos-tip flycheck-haskell flx-ido floobits fish-mode find-by-pinyin-dired fill-column-indicator feature-mode fcitx fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks ensime enh-ruby-mode emmet-mode elisp-slime-nav editorconfig easy-kill dumb-jump dockerfile-mode docker disaster diff-hl dash-at-point counsel-projectile counsel-dash company-ycmd company-web company-tern company-statistics company-shell company-quickhelp company-go company-ghci company-ghc company-cabal company-c-headers company-auctex column-enforce-mode coffee-mode cmm-mode cmake-mode clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu chruby cargo bundler blog-admin beacon auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-pinyin ace-link ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(compilation-info ((((type tty)) :bold t :foreground "green") (t :foreground "green")))
- '(compilation-warning ((((class color)) :foreground "red" :bold nil)))
- '(diff-added ((((type tty pc)) :foreground "yellow") (t :foreground "aquamarine")))
- '(diff-changed ((((type tty pc)) :foreground "red" :background "blue") (t :foreground "deep pink")))
- '(diff-context ((((class grayscale) (background light)) (:foreground "LightGray" :weight bold)) (((class grayscale) (background dark)) (:foreground "DimGray" :weight bold)) (((class color) (min-colors 88) (background light)) (:foreground "Orchid")) (((class color) (min-colors 88) (background dark)) (:foreground "cornflower blue")) (((class color) (min-colors 16) (background light)) (:foreground "Orchid")) (((class color) (min-colors 16) (background dark)) (:foreground "LightSteelBlue")) (((class color) (min-colors 8)) (:foreground "blue" :weight bold)) (t (:weight bold))))
- '(diff-file-header ((((class color)) :foreground "magenta")))
- '(diff-header ((((class color)) :foreground "green")))
- '(diff-hunk-header ((((type tty pc)) :bold t :foreground "green") (t :foreground "OliveDrab1")))
- '(diff-index ((((class color)) :foreground "cyan")))
- '(diff-indicator-added ((((type tty pc)) :foreground "red" :background "white") (t :foreground "red" :background "white")))
- '(diff-indicator-removed ((((type tty pc)) :foreground "yellow" :background "red") (t :foreground "yellow" :background "red")))
- '(diff-refine-change ((((type tty pc)) :foreground "white" :background "blue") (t :foreground "dark orchid")) t)
- '(diff-refine-changed ((((type tty pc)) :foreground "white" :background "blue") (t :foreground "dark orchid")))
- '(diff-removed ((((class color)) :foreground "red")))
- '(dired-symlink ((t (:foreground "DarkOrange"))))
- '(diredp-date-time ((((type tty)) :foreground "yellow") (t :foreground "goldenrod1")))
- '(diredp-dir-heading ((((type tty)) :background "yellow" :foreground "blue") (t :background "Pink" :foreground "DarkOrchid1")))
- '(diredp-display-msg ((((type tty)) :foreground "blue") (t :foreground "cornflower blue")))
- '(diredp-symlink ((t (:foreground "DarkOrange"))))
- '(ediff-current-diff-A ((((type tty)) :background "yellow" :foreground "blue") (t :background "DarkSeaGreen3" :foreground "blue violet")))
- '(ediff-current-diff-B ((((type tty)) :background "yellow" :foreground "black") (t :background "DodgerBlue1" :foreground "gray11")))
- '(ediff-fine-diff-A ((((type tty)) :background "blue" :foreground "white") (t :background "gold1" :foreground "red")))
- '(ediff-fine-diff-B ((((type tty)) :background "cyan" :foreground "red") (t :background "chocolate2" :foreground "dark slate blue")))
- '(eldoc-highlight-function-argument ((((type tty)) :bold t :foreground "green") (t :bold nil :foreground "green")))
- '(font-lock-comment-delimiter-face ((((type tty)) :bold t :foreground "red") (t :foreground "chocolate1")))
- '(font-lock-constant-face ((((type tty)) :bold t :background "white" :foreground "blue") (t :background "darkslateblue" :foreground "chartreuse")))
- '(font-lock-doc-face ((((type tty)) :foreground "green") (t (:foreground "maroon1"))))
- '(font-lock-function-name-face ((((type tty)) :bold t :background "yellow" :foreground "blue") (t :background "#45D463DD4FF8" :foreground "yellow")))
- '(font-lock-regexp-grouping-backslash ((((type tty)) :foreground "red") (t (:foreground "red"))))
- '(font-lock-regexp-grouping-construct ((((type tty)) :foreground "yellow") (t (:foreground "yellow"))))
- '(font-lock-type-face ((((type tty)) :bold t :foreground "green") (t (:foreground "green"))))
- '(font-lock-warning-face ((t (:background "red" :foreground "white"))))
- '(helm-buffer-directory ((t (:background "Black" :foreground "Cyan"))))
- '(helm-ff-directory ((t (:background "Black" :foreground "Cyan"))))
- '(helm-locate-finish ((t (:foreground "#2aa198"))))
- '(helm-selection ((t (:background "green" :foreground "black" :underline nil))))
- '(ido-first-match ((((type tty pc)) :foreground "yellow") (t :bold nil :foreground "yellow")))
- '(ido-only-match ((((class color)) (:bold nil :foreground "green"))))
- '(info-header-node ((((class color) (background dark)) (:foreground "red"))))
- '(info-menu-header ((((type tty pc)) :underline t :weight bold) (t :inherit nil :foreground "coral2" :bold nil)))
- '(info-quoted-name ((((type tty)) :bold t :foreground "green") (t :foreground "cornflower blue")))
- '(info-reference-item ((((type tty pc)) :background "white" :foreground "black") (t :background "white" :foreground "cornflower blue")))
- '(info-title-1 ((((type tty pc) (class color) (background dark)) :foreground "yellow" :weight bold) (t :foreground "yellow")))
- '(info-title-2 ((((type tty pc) (class color) (background dark)) :foreground "yellow" :weight bold) (t :foreground "lightblue")))
- '(info-title-3 ((((type tty pc) (class color) (background dark)) :foreground "yellow" :weight bold) (t :foreground "violetred1")))
- '(info-title-4 ((((type tty pc) (class color) (background dark)) :foreground "yellow" :weight bold) (t :foreground "green")))
- '(info-xref ((((type tty)) :inherit link) (t :foreground "#165ACBD1FFFF" :underline t)))
- '(isearch-fail ((((class color)) (:background "red"))))
- '(lazy-highlight ((t (:background "darkolivegreen" :foreground "White"))))
- '(linum ((((background dark)) :foreground "cyan") (t :foreground "gray")))
- '(match ((((class color) (min-colors 88) (background light)) :background "yellow1") (((class color) (min-colors 88) (background dark)) :background "RoyalBlue3" :foreground "cyan") (((class color) (min-colors 8) (background light)) :background "yellow" :foreground "black") (((class color) (min-colors 8) (background dark)) :background "blue" :foreground "white") (((type tty) (class mono)) :inverse-video t) (t :background "gray")))
- '(mode-line-buffer-id ((t (:inherit nil :background "Black" :foreground "yellow"))))
- '(powerline-active1 ((t (:inherit sml/global :background "Black"))))
- '(powerline-active2 ((t (:inherit sml/global :background "Black"))))
- '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "Black"))))
- '(powerline-inactive2 ((t (:inherit font-lock-comment-face :background "Black"))))
- '(pulse-highlight-start-face ((((class color) (min-colors 88) (background dark)) :background "#AAAA33") (((class color) (min-colors 88) (background light)) :background "#FFFFAA") (((class color) (min-colors 8)) :background "blue" :foreground "red")))
- '(region ((((class color) (min-colors 88) (background dark)) :background "#4CAA4CAA4CAA") (((class color) (min-colors 88) (background light)) :background "lightgoldenrod2") (((class color) (min-colors 16) (background dark)) :background "wheat") (((class color) (min-colors 16) (background light)) :background "lightgoldenrod2") (((class color) (min-colors 8)) :background "blue" :foreground "red") (((type tty) (class mono)) :inverse-video t) (t :background "gray")))
- '(sml/filename ((((class color) (min-colors 89)) (:foreground "#F0DFAF" :weight bold))))
- '(sml/folder ((t (:inherit sml/global :background "Black" :foreground "Cyan" :weight normal))))
- '(sml/git ((t (:inherit (sml/read-only sml/prefix) :background "Black"))))
- '(sml/name-filling ((t (:inherit sml/prefix :background "Black" :weight normal))))
- '(sml/position-percentage ((t (:inherit sml/prefix :background "Black" :foreground "Black" :weight normal))))
- '(sml/prefix ((t (:inherit sml/global :background "Black" :foreground "Cyan"))))
- '(sml/vc ((t (:inherit sml/git :background "Black" :foreground "Cyan"))))
- '(sml/vc-edited ((t (:inherit sml/prefix :background "Black" :foreground "Red")))))
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
