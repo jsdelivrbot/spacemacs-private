@@ -221,14 +221,14 @@ values."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'nil
+   dotspacemacs-startup-banner "/Users/zwb/.spacemacs.d/banner/spacemacs.png"
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((projects . 5))
+   dotspacemacs-startup-lists '((projects . 10))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
@@ -414,6 +414,12 @@ before packages are loaded. If you are unsure, you should try in setting them in
         "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
   (setq byte-compile-warnings '(not obsolete))
   (setq warning-minimum-level :error)
+
+  ;; mode-line
+  (setq spaceline-org-clock-p t)
+  (with-eval-after-load 'spaceline-segments
+    (spaceline-toggle-minor-modes-off)
+    )
   )
 
 (defun dotspacemacs/user-config ()
@@ -422,7 +428,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   This is the place where most of your configurations should be done. Unless it is
   explicitly specified that a variable should be set before a package is loaded,
   you should place your code here."
-  (setq-default dotspacemacs-startup-banner '"/Users/zwb/.spacemacs.d/banner/spacemacs.png")
 
   ;; email address
   (setq user-mail-address "zwb.ict@gmail.com")
@@ -436,12 +441,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   ;; flycheck-pos-tip
   (setq flycheck-pos-tip-timeout 4)
-
-  ;; mode-line
-  (setq spaceline-org-clock-p t)
-  (with-eval-after-load 'spaceline-segments
-    (spaceline-toggle-minor-modes-off)
-    )
 
   ;; hs-minor
   (add-hook 'prog-mode-hook (lambda () (unless (eq major-mode 'web-mode)
