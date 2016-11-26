@@ -406,9 +406,9 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (setq configuration-layer--elpa-archives
-    '(("melpa-cn" . "https://elpa.zilongshanren.com/melpa/")
-      ("org-cn"   . "https://elpa.zilongshanren.com/org/")
-      ("gnu-cn"   . "https://elpa.zilongshanren.com/gnu/")))
+        '(("melpa-cn" . "https://elpa.zilongshanren.com/melpa/")
+          ("org-cn"   . "https://elpa.zilongshanren.com/org/")
+          ("gnu-cn"   . "https://elpa.zilongshanren.com/gnu/")))
 
   (setq tramp-ssh-controlmaster-options
         "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
@@ -428,6 +428,30 @@ before packages are loaded. If you are unsure, you should try in setting them in
   This is the place where most of your configurations should be done. Unless it is
   explicitly specified that a variable should be set before a package is loaded,
   you should place your code here."
+
+  ;; c style setting
+  (defun c-lineup-arglist-tabs-only (ignored)
+    "Line up argument lists by tabs, not spaces"
+    (let* ((anchor (c-langelem-pos c-syntactic-element))
+           (column (c-langelem-2nd-pos c-syntactic-element))
+           (offset (- (1+ column) anchor))
+           (steps (floor offset c-basic-offset)))
+      (* (max steps 1)
+         c-basic-offset)))
+
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              ;; Add kernel style
+              (c-add-style
+               "linux-tabs-only"
+               '("linux" (c-offsets-alist
+                          (arglist-cont-nonempty
+                           c-lineup-gcc-asm-reg
+                           c-lineup-arglist-tabs-only))))))
+
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (c-set-style "linux-tabs-only")))
 
   ;; email address
   (setq user-mail-address "zwb.ict@gmail.com")
@@ -462,7 +486,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; ycmd
   (setq url-show-status nil)
   (setq request-message-level -1)
-  (set-variable 'ycmd-extra-conf-whitelist '("~/workspace/CProjects/*" "~/workspace/NodeProjects/*" "~/workspace/NginxProjects/*"))
+  (set-variable 'ycmd-extra-conf-whitelist '("~/workspace/CProjects/*" "~/workspace/CPProjects/*" "~/workspace/NodeProjects/*" "~/workspace/NginxProjects/*"))
 
   (display-time)
 
@@ -485,3 +509,9 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+  )
