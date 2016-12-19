@@ -29,6 +29,7 @@
         git-messenger
         pangu-spacing
         nodejs-repl
+        (systemtap :location local)
         ))
 
 (defun zwb/post-init-multi-term ()
@@ -138,6 +139,11 @@ If `F.~REV~' already exists, use it instead of checking it out again."
   (use-package nodejs-repl
     :init
     :defer t))
+
+(defun zwb/init-systemtap()
+  (use-package systemtap
+    :init
+    (load-file "/Users/zwb/.spacemacs.d/zwb/local/systemtap/systemtap-init.el")))
 
 (provide 'packages.el)
 
