@@ -481,6 +481,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (with-eval-after-load 'org
     (setq org-agenda-files (list org-directory))
     (setq org-bullets-bullet-list '("☰" "☷" "⋗" "⇀"))
+    (add-hook 'org-mode-hook (lambda () (autoload 'space-doc-mode "space-doc" nil 'interactive)))
     )
 
   ;; ycmd
