@@ -143,7 +143,10 @@ If `F.~REV~' already exists, use it instead of checking it out again."
 (defun zwb/init-systemtap()
   (use-package systemtap
     :init
-    (load-file "/Users/zwb/.spacemacs.d/zwb/local/systemtap/systemtap-init.el")))
+    (progn
+      (add-to-list 'load-path "/Users/zwb/.spacemacs.d/layers/zwb/local/systemtap/")
+      (load-file "/Users/zwb/.spacemacs.d/layers/zwb/local/systemtap/systemtap-init.el")
+      )))
 
 (provide 'packages.el)
 

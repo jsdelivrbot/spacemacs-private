@@ -1,0 +1,3 @@
+[submodule "local/org-query"]
+	path = local/org-query
+	url = https://github.com/remyhonig/org-query
