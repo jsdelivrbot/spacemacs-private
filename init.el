@@ -463,10 +463,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; eyebrowse
   (setq eyebrowse-new-workspace (lambda () (helm-for-files)))
 
-  ;; wakatime
-
-
-  (global-set-key  (kbd "C-h") 'backward-delete-char)
+  (define-key evil-hybrid-state-map (kbd "C-h") 'backward-delete-char)
+  (define-key evil-emacs-state-map (kbd "C-h") 'backward-delete-char)
 
   (with-eval-after-load 'org
     (setq org-agenda-files (list org-directory))
