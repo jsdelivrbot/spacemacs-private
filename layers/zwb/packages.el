@@ -30,6 +30,7 @@
         pangu-spacing
         nodejs-repl
         (systemtap :location local)
+        whole-line-or-region
         ))
 
 (defun zwb/post-init-multi-term ()
@@ -147,6 +148,11 @@ If `F.~REV~' already exists, use it instead of checking it out again."
       (add-to-list 'load-path "/Users/zwb/.spacemacs.d/layers/zwb/local/systemtap/")
       (load-file "/Users/zwb/.spacemacs.d/layers/zwb/local/systemtap/systemtap-init.el")
       )))
+
+(defun zwb/init-whole-line-or-region ()
+  (use-package whole-line-or-region
+    :init
+    :defer t))
 
 (provide 'packages.el)
 
