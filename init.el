@@ -64,7 +64,7 @@ values."
           org-enable-bootstrap-support t
           org-enable-reveal-js-support t
           org-enable-org-journal-support t
-          org-projectile-file "~/GTD/todos.org")
+          org-projectile-file "~/workspace/todos.org")
      semantic
 
      ;; Frameworks
@@ -488,7 +488,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (with-eval-after-load 'org-agenda
     (require 'org-projectile)
-    (add-to-list 'org-capture-templates (org-projectile:project-todo-entry))
     (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files))))
 
   ;; ycmd
