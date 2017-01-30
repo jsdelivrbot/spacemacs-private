@@ -64,7 +64,7 @@ values."
           org-enable-bootstrap-support t
           org-enable-reveal-js-support t
           org-enable-org-journal-support t
-          org-projectile-file "TODOs.org")
+          org-projectile-file "~/GTD/todos.org")
      semantic
 
      ;; Frameworks
@@ -474,8 +474,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   ;; org
   (with-eval-after-load 'org
-    (setq org-agenda-files (list org-directory))
-    (setq org-journal-dir "~/org/journal/")
+    (setq org-agenda-files (file-expand-wildcards "~/GTD/*.org"))
+    (setq org-journal-dir "~/GTD/journal/")
     (setq org-journal-file-format "%Y-%m-%d")
     (setq org-journal-date-prefix "#+TITLE: ")
     (setq org-journal-date-format "%A, %B %d %Y")
@@ -488,7 +488,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   (with-eval-after-load 'org-agenda
     (require 'org-projectile)
-    (push (org-projectile:todo-files) org-agenda-files))
+    (add-to-list 'org-capture-templates (org-projectile:project-todo-entry))
+    (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files))))
 
   ;; ycmd
   (setq url-show-status nil)
@@ -505,7 +506,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-directory "~/GTD")
  '(package-selected-packages
    (quote
     (winum wakatime-mode unfill helm-gtags helm-cscope yapfify yaml-mode xterm-color xcscope ws-butler window-numbering which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv ranger rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort pug-mode projectile-rails rake inflections popwin pip-requirements persp-mode pcre2el pbcopy paradox spinner pangu-spacing ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro alert log4e gntp org-plus-contrib org-page git org mustache org-download org-bullets open-junk-file nodejs-repl nginx-mode neotree mwim multi-term move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor multiple-cursors js2-mode js-doc ivy-purpose window-purpose ivy-hydra insert-shebang info+ indent-guide imenu-list ido-vertical-mode hydra hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make haml-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md ggtags flycheck-ycmd flycheck-rust flycheck-pos-tip flycheck flx-ido flx floobits fish-mode find-by-pinyin-dired fill-column-indicator feature-mode fcitx fasd grizzl fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks enh-ruby-mode emmet-mode elisp-slime-nav editorconfig easy-kill dumb-jump dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat disaster diminish diff-hl dash-at-point cython-mode counsel-projectile projectile pkg-info epl counsel-dash helm-dash helm helm-core counsel swiper ivy company-ycmd ycmd request-deferred request deferred company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-quickhelp company-go go-mode company-c-headers company-anaconda company column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format chruby chinese-pyim chinese-pyim-basedict pos-tip cargo rust-mode bundler inf-ruby blog-admin names ctable bind-map bind-key beacon seq auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-pinyin pinyinlib ace-jump-mode ace-link avy ac-ispell auto-complete popup quelpa package-build seti-theme))))
@@ -516,26 +516,3 @@ before packages are loaded. If you are unsure, you should try in setting them in
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-directory "~/GTD")
- '(package-selected-packages
-   (quote
-    (ox-twbs ox-reveal org-journal whole-line-or-region winum wakatime-mode unfill helm-gtags helm-cscope yapfify yaml-mode xterm-color xcscope ws-butler window-numbering which-key wgrep web-mode web-beautify volatile-highlights vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package toml-mode toc-org tagedit stickyfunc-enhance srefactor spacemacs-theme spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv ranger rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort pug-mode projectile-rails rake inflections popwin pip-requirements persp-mode pcre2el pbcopy paradox spinner pangu-spacing ox-gfm osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro alert log4e gntp org-plus-contrib org-page git org mustache org-download org-bullets open-junk-file nodejs-repl nginx-mode neotree mwim multi-term move-text mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor multiple-cursors js2-mode js-doc ivy-purpose window-purpose ivy-hydra insert-shebang info+ indent-guide imenu-list ido-vertical-mode hydra hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make haml-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md ggtags flycheck-ycmd flycheck-rust flycheck-pos-tip flycheck flx-ido flx floobits fish-mode find-by-pinyin-dired fill-column-indicator feature-mode fcitx fasd grizzl fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks enh-ruby-mode emmet-mode elisp-slime-nav editorconfig easy-kill dumb-jump dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat disaster diminish diff-hl dash-at-point cython-mode counsel-projectile projectile pkg-info epl counsel-dash helm-dash helm helm-core counsel swiper ivy company-ycmd ycmd request-deferred request deferred company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-quickhelp company-go go-mode company-c-headers company-anaconda company column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format chruby chinese-pyim chinese-pyim-basedict pos-tip cargo rust-mode bundler inf-ruby blog-admin names ctable bind-map bind-key beacon seq auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-pinyin pinyinlib ace-jump-mode ace-link avy ac-ispell auto-complete popup quelpa package-build seti-theme))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:background "#151718" :foreground "#D4D7D6"))))
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
-)

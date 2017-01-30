@@ -65,7 +65,7 @@
                         '(category-keep)))))
 
         (defun gtd/agendablock-loose-tasks ()
-          ; (require 'org-habit)
+          (require 'org-habit)
           `(tags-todo "/+TODO"
                       ((org-agenda-overriding-header "Tasks not belonging to a project")
                        (org-agenda-skip-function
@@ -136,7 +136,7 @@
                        "* TODO Review %c\n%U\n" :immediate-finish t)
                       ("m" "Meeting" entry (file "~/GTD/refile.org")
                        "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-                      ("p" "Phone call" entry (file "~/GTD/refile.org")
+                      ("c" "Phone call" entry (file "~/GTD/refile.org")
                        "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
                       ("h" "Habit" entry (file "~/GTD/refile.org")
                        "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
