@@ -25,7 +25,7 @@
       (setq op/personal-disqus-shortname "zwb-ict")
       (setq op/personal-google-analytics-id "UA-58174747-1")
       ; (setq op/theme 'default)
-      (setq op/site-main-title "Altair的信条")
+      (setq op/site-main-title "Nortrom的信条")
       (setq op/site-sub-title "=============> 这里没有上帝，只有属于我们自己的信条。")
       (setq op/personal-github-link "https://github.com/zwb-ict")
 
