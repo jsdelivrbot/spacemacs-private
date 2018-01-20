@@ -251,20 +251,35 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'org-mode
+
+   ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
+   ;; (default nil)
+   dotspacemacs-initial-scratch-message nil
+
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(seti)
+
+   ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
+   ;; `all-the-icons', `custom', `vim-powerline' and `vanilla'. The first three
+   ;; are spaceline themes. `vanilla' is default Emacs mode-line. `custom' is a
+   ;; user defined themes, refer to the DOCUMENTATION.org for more info on how
+   ;; to create your own spaceline theme. Value can be a symbol or list with\
+   ;; additional properties.
+   ;; (default '(spacemacs :separator wave :separator-scale 1.5))
+   dotspacemacs-mode-line-theme '(all-the-icons :separator wave)
+
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Monaco"
-                               :size 14
+                               :size 13
                                :weight normal
-                               :width normal
-                               :powerline-scale 1.1)
+                               :width normal)
+
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
@@ -588,7 +603,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (realgud test-simple loc-changes load-relative ivy-rtags google-c-style flycheck-rtags disaster company-rtags rtags company-c-headers cmake-mode cmake-ide levenshtein clang-format yapfify yaml-mode xterm-color xcscope ws-butler winum which-key wgrep web-mode web-beautify wakatime-mode volatile-highlights vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package unfill treemacs-projectile treemacs-evil toml-mode toc-org tagedit symon string-inflection spaceline smex smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor rubocop rspec-mode robe reveal-in-osx-finder restart-emacs rbenv ranger rainbow-delimiters racer pyvenv pytest pyim pyenv-mode py-isort pug-mode projectile-rails popwin pippel pip-requirements persp-mode pbcopy password-generator paradox pangu-spacing ox-twbs ox-reveal ox-gfm overseer osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-page org-journal org-download org-bullets org-brain open-junk-file noflet nginx-mode nameless mwim mvn multi-term move-text mmm-mode minitest meghanada maven-test-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js-doc ivy-rich ivy-purpose ivy-hydra insert-shebang info+ indent-guide importmagic impatient-mode hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-make groovy-mode groovy-imports gradle-mode google-translate golden-ratio godoctor go-tag go-rename go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md ggtags geiser fuzzy flycheck-ycmd flycheck-rust flycheck-pos-tip flycheck-gometalinter flycheck-bashate flx-ido floobits fish-mode find-by-pinyin-dired fill-column-indicator feature-mode fcitx fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks ensime enh-ruby-mode emmet-mode elisp-slime-nav editorconfig dumb-jump dockerfile-mode docker diminish diff-hl dash-at-point cython-mode counsel-projectile counsel-gtags counsel-dash counsel-css company-ycmd company-web company-tern company-statistics company-shell company-quickhelp company-lua company-go company-emacs-eclim company-anaconda column-enforce-mode coffee-mode clean-aindent-mode chruby cargo bundler browse-at-remote blog-admin auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-pinyin ace-link ac-ispell))))
+    (yasnippet-snippets yapfify yaml-mode xterm-color xcscope ws-butler winum which-key wgrep web-mode web-beautify wakatime-mode volatile-highlights vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package unfill treemacs-projectile treemacs-evil treemacs pfuture toml-mode toc-org tagedit symon string-inflection spaceline-all-the-icons all-the-icons memoize font-lock+ spaceline powerline smex smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe reveal-in-osx-finder restart-emacs realgud test-simple loc-changes load-relative rbenv ranger rainbow-delimiters racer pyvenv pytest pyim pyim-basedict pyenv-mode py-isort pug-mode projectile-rails rake inflections popwin pippel pip-requirements persp-mode pcre2el pbcopy password-generator paradox spinner pangu-spacing ox-twbs ox-reveal ox-gfm overseer osx-trash osx-dictionary orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-page git mustache ht org-journal org-download org-bullets org-brain org-plus-contrib open-junk-file noflet nginx-mode nameless mwim mvn multi-term move-text mmm-mode minitest meghanada maven-test-mode markdown-toc markdown-mode magit-gitflow macrostep lorem-ipsum livid-mode skewer-mode live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor multiple-cursors js2-mode js-doc ivy-rtags ivy-purpose window-purpose ivy-hydra insert-shebang info+ indent-guide importmagic epc concurrent impatient-mode simple-httpd imenu-list hydra hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-make haml-mode groovy-mode groovy-imports pcache gradle-mode google-translate google-c-style golden-ratio godoctor go-tag go-rename go-guru go-eldoc gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md ggtags geiser fuzzy flycheck-ycmd flycheck-rust seq flycheck-rtags flycheck-pos-tip flycheck-gometalinter flycheck-bashate flycheck flx-ido flx floobits fish-mode find-by-pinyin-dired fill-column-indicator feature-mode fcitx fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit git-commit ghub with-editor evil-lisp-state evil-lion evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-cleverparens smartparens paredit evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help erlang erc-yt erc-view-log erc-terminal-notifier erc-social-graph erc-image erc-hl-nicks enh-ruby-mode emmet-mode elisp-slime-nav editorconfig dumb-jump dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat disaster diminish diff-hl dash-at-point cython-mode counsel-projectile projectile counsel-gtags counsel-dash helm-dash helm helm-core counsel-css counsel swiper ivy company-ycmd ycmd pkg-info request-deferred let-alist request deferred epl company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-rtags rtags company-quickhelp pos-tip company-lua lua-mode company-go go-mode company-emacs-eclim eclim company-c-headers company-anaconda column-enforce-mode coffee-mode cmake-mode cmake-ide levenshtein clean-aindent-mode clang-format chruby cargo rust-mode bundler inf-ruby browse-at-remote blog-admin names ctable bind-map bind-key auto-yasnippet auto-highlight-symbol auto-compile packed async anaconda-mode pythonic f aggressive-indent adaptive-wrap ace-window ace-pinyin pinyinlib ace-link avy ac-ispell auto-complete popup s dash company yasnippet sbt-mode scala-mode ensime))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
