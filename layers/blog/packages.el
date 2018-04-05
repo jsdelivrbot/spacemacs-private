@@ -20,14 +20,14 @@
   (use-package org-page
     :init
     (progn
-      (setq op/repository-directory "~/Blog")
-      (setq op/site-domain "https://zwb-ict.github.io")
-      (setq op/personal-disqus-shortname "zwb-ict")
-      (setq op/personal-google-analytics-id "UA-58174747-1")
+      (setq op/repository-directory "~/Documents/Blog")
+      (setq op/site-domain "https://ethercflow.github.io")
+      (setq op/personal-disqus-shortname "ethercflow")
+      (setq op/personal-google-analytics-id "UA-116911520-1")
       ; (setq op/theme 'default)
-      (setq op/site-main-title "Nortrom的信条")
+      (setq op/site-main-title "Zwb's Up")
       (setq op/site-sub-title "=============> 这里没有上帝，只有属于我们自己的信条。")
-      (setq op/personal-github-link "https://github.com/zwb-ict")
+      (setq op/personal-github-link "https://github.com/ethercflow")
 
       (setq op/category-config-alist
             '(("blog" ;; this is the default configuration

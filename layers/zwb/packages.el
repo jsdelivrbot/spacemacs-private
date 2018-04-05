@@ -31,7 +31,9 @@
 ;;        nodejs-repl
 ;;        (systemtap :location local)
 ;;        whole-line-or-region
-        spaceline-all-the-icons
+;;        spaceline-all-the-icons
+          all-the-icons-dired
+          all-the-icons-ivy
         ))
 
 ;;(defun zwb/post-init-multi-term ()
@@ -155,11 +157,19 @@
 ;;    :init
 ;;    :defer t))
 
-(defun zwb/init-spaceline-all-the-icons ()
-    (use-package spaceline-all-the-icons
-      :after spaceline
-      :config (spaceline-all-the-icons-theme)
-      ))
+(defun zwb/init-all-the-icons-dired ()
+  (use-package all-the-icons-dired
+    :config (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  ))
+
+(defun zwb/init-all-the-icons-ivy ()
+  (use-package all-the-icons-ivy
+    :config
+    (progn
+      (setq all-the-icons-ivy-file-commands
+            '(counsel-find-file counsel-file-jump counsel-recentf counsel-projectile-find-file counsel-projectile-find-dir))
+      (all-the-icons-ivy-setup)
+      )))
 
 (provide 'packages.el)
 
